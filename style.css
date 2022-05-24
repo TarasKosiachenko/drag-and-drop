@@ -1,0 +1,7 @@
+#symbols {
+  display: flex;
+}
+
+button, p {
+  cursor: pointer
+}

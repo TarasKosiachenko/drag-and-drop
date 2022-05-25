@@ -1,37 +1,39 @@
 function outputString(){
-
   const typedString = (document.getElementById("inputText").value);
   let ArrString = typedString.split('')
+  document.getElementById("inputText").value = ''
 
   document.getElementById('symbols').innerHTML = '';
 
   let newArrStr = ArrString.map((el, i) => {
-    const p = document.createElement('p');
-    p.id = i;
-    p.innerHTML = el
-
-    p.addEventListener('mousedown',  () => {
-
-
-      document.addEventListener('mousemove', function(e){
-          document.getElementById(i).style.transform = 'translateY('+(e.clientY)+'px)';
-          document.getElementById(i).style.transform += 'translateX('+(e.clientX)+'px)';
-        });
-
-    });
-
+    const span = document.createElement('span');
+    span.id = i;
+    span.innerHTML = el
 
     const div = document.getElementById('symbols');
-    div.appendChild(p)
+    div.appendChild(span)
+
+
+    span.onmousedown = function(e) {
+      span.style.position = 'absolute';
+      moveAt(e);
+      document.body.appendChild(span);
+      span.style.zIndex = 1000;
+
+      function moveAt(e) {
+        span.style.left = e.pageX - span.offsetWidth / 2 + 'px';
+        span.style.top = e.pageY - span.offsetHeight / 2 + 'px';
+      }
+      document.onmousemove = function(e) {
+        moveAt(e);
+      }
+      span.onmouseup = function() {
+        document.onmousemove = null;
+        span.onmouseup = null;
+      }
+    }
   })
 
 }
 
 document.getElementById("printLine").onclick = outputString;
-
-
-
-// document.addEventListener('mousemove', function(ev){
-//   document.getElementById('1').style.transform = 'translateY('+(ev.clientY-55)+'px)';
-//   document.getElementById('1').style.transform += 'translateX('+(ev.clientX-10)+'px)';
-// },false);
